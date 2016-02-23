@@ -10,7 +10,7 @@ npm install -g typings
 
 2.- Install this typings!
 ```
-typings install github:RafaelSalguero/typings-google-maps -n google-maps
+typings install github:RafaelSalguero/typings-google-maps -A -n google-maps
 ```
 
 Trying to give better support to google maps on typescript.
