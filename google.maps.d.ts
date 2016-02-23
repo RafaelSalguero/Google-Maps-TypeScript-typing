@@ -35,20 +35,22 @@ declare module google.maps {
         setValues(values?: any): void;
         unbind(key: string): void;
         unbindAll(): void;
+        addListener(eventName:string, handler:Function);
     }
 
-    export class MVCArray extends MVCObject {
-        constructor (array?: any[]);
+    export class MVCArray<T> extends MVCObject {
+        constructor (array?: T[]);
         clear(): void;
-        forEach(callback: (elem: any, index: number) => void ): void;
-        getArray(): any[];
-        getAt(i: number): any;
+        forEach(callback: (elem: T, index: number) => void ): void;
+        getArray(): T[];
+        getAt(i: number): T;
         getLength(): number;
-        insertAt(i: number, elem: any): void;
+        insertAt(i: number, elem: T): void;
         pop(): void;
-        push(elem: any): number;
-        removeAt(i: number): any;
-        setAt(i: number, elem: any): void;
+        push(elem: T): number;
+        removeAt(i: number): T;
+        setAt(i: number, elem: T): void;
+        [i : number] : T;
     }
 
     /***** Map *****/
@@ -74,9 +76,9 @@ declare module google.maps {
         setStreetView(panorama: StreetViewPanorama): void;
         setTilt(tilt: number): void;
         setZoom(zoom: number): void;
-        controls: MVCArray[];
+        controls: MVCArray<any>;
         mapTypes: MapTypeRegistry;
-        overlayMapTypes: MVCArray;
+        overlayMapTypes: MVCArray<any>;
     }
 
     export interface MapOptions {
@@ -307,28 +309,33 @@ declare module google.maps {
         constructor (opts?: PolylineOptions);
         getEditable(): boolean;
         getMap(): Map;
-        getPath(): MVCArray[];
+        getPath(): MVCArray<LatLng>;
         getVisible(): boolean;
         setEditable(editable: boolean): void;
         setMap(map: Map): void;
         setOptions(options: PolylineOptions): void;
-        setPath(path: MVCArray[]): void;
+        setPath(path: MVCArray<LatLng>): void;
         setPath(path: LatLng[]): void;
         setVisible(visible: boolean): void;
     }
 
-    export interface PolylineOptions {
+    /**Interface common for RectangleOptions, CircleOptions, PolygonOptions and PolylineOptions  */
+    export interface GeometryOptions {
         clickable?: boolean;
         editable?: boolean;
-        geodesic?: boolean;
-        icons?: IconSequence[];
-        map?: Map;
-        path?: any[];
+        map?: Map;    
+        draggable : boolean
+
         strokeColor?: string;
         strokeOpacity?: number;
         strokeWeight?: number;
         visible?: boolean;
         zIndex?: number;
+    }
+    export interface PolylineOptions extends GeometryOptions {
+        geodesic?: boolean;
+        icons?: IconSequence[];
+        path?: any[];
     }
 
     export interface IconSequence {
@@ -341,34 +348,26 @@ declare module google.maps {
         constructor (opts?: PolygonOptions);
         getEditable(): boolean;
         getMap(): Map;
-        getPath(): MVCArray
-        getPaths(): MVCArray[];
+        getPath(): MVCArray<LatLng>
+        getPaths(): MVCArray<MVCArray<LatLng>>;
         getVisible(): boolean;
         setEditable(editable: boolean): void;
         setMap(map: Map): void;
         setOptions(options: PolygonOptions): void;
-        setPath(path: MVCArray): void;
+        setPath(path: MVCArray<LatLng>): void;
         setPath(path: LatLng[]): void;
-        setPaths(paths: MVCArray): void;
-        setPaths(paths: MVCArray[]): void;
+        setPaths(paths: MVCArray<LatLng>): void;
+        setPaths(paths: MVCArray<MVCArray<LatLng>>): void;
         setPaths(path: LatLng[]): void;
         setPaths(path: LatLng[][]): void;
         setVisible(visible: boolean): void;
     }
 
-    export interface  PolygonOptions {
-        clickable?: boolean;
-        editable?: boolean;
+    export interface  PolygonOptions extends GeometryOptions {
         fillColor?: string;
         fillOpacity?: number;
         geodesic?: boolean;
-        map?: Map;
         paths?: any[];
-        strokeColor?: string;
-        strokeOpacity?: number;
-        strokeWeight?: number;
-        visible?: boolean;
-        zIndex?: number;
     }
 
     export interface PolyMouseEvent {
@@ -390,18 +389,10 @@ declare module google.maps {
         setVisible(visible: boolean): void;
     }
 
-    export interface RectangleOptions {
+    export interface RectangleOptions extends GeometryOptions {
         bounds?: LatLngBounds;
-        clickable?: boolean;
-        editable?: boolean;
         fillColor?: string;
         fillOpacity?: number;
-        map?: Map;
-        strokeColor?: string;
-        strokeOpacity?: number;
-        strokeWeight?: number;
-        visible?: boolean;
-        zIndex?: number;
     }
 
     export class Circle extends MVCObject {
@@ -420,19 +411,11 @@ declare module google.maps {
         setVisible(visible: boolean): void;
     }
 
-    export interface CircleOptions {
+    export interface CircleOptions extends GeometryOptions {
         center?: LatLng;
-        clickable?: boolean;
-        editable?: boolean;
         fillColor?: string;
         fillOpacity?: number;
-        map?: Map;
         radius?: number;
-        strokeColor?: string;
-        strokeOpacity?: number;
-        strokeWeight?: number;
-        visible?: boolean;
-        zIndex?: number;
     }
 
     export class GroundOverlay extends MVCObject {
@@ -1062,7 +1045,7 @@ declare module google.maps {
     /***** Street View *****/
     export class StreetViewPanorama {
         constructor (container: Element, opts?: StreetViewPanoramaOptions);
-        controls: MVCArray[];
+        controls: MVCArray<any>;
         getLinks(): StreetViewLink[];
         getPano(): string;
         getPosition(): LatLng;
@@ -1519,9 +1502,9 @@ declare module google.maps {
     export module visualization {
         export class HeatmapLayer extends MVCObject {
             constructor (opts?: HeatmapLayerOptions);
-            getData(): MVCArray;
+            getData(): MVCArray<any>;
             getMap(): Map;
-            setData(data: MVCArray): void;
+            setData(data: MVCArray<any>): void;
             setData(data: LatLng[]): void;
             setData(data: WeightedLocation[]): void;
             setMap(map: Map): void;
