@@ -894,10 +894,18 @@ declare module google.maps {
         water?: string;
     }
 
-    export enum MapTypeStyleElementType {
-        all,
-        geometry,
-        labels
+    export class  MapTypeStyleElementType {
+        static all : string;
+        static geometry : string |  
+        {
+            fill : string, 
+            stroke : string
+        }
+        
+        static labels : string | {
+            icon : string ;
+            labels : string ;            
+        } 
     }
 
     export interface MapTypeStyler {
