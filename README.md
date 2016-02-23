@@ -1,4 +1,6 @@
-Google Maps API v3 - TypeScript Definition
+Google Maps API v3 - TypeScript Definition ❤
 =============
 
-Available on NuGet: PM> Install-Package google.maps.d.ts
+Trying to give better support to google maps on typescript.
+
+Please contribute with pull requests or issues!
