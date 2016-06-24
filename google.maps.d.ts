@@ -229,7 +229,7 @@ declare module google.maps {
         cursor?: string;
         draggable?: boolean;
         flat?: boolean;
-        icon?: any;
+        icon?: string | MarkerImage;
         map?: any;
         optimized?: boolean;
         position?: LatLng;
