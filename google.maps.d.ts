@@ -1098,6 +1098,7 @@ declare module google.maps {
         position?: LatLng;
         pov?: StreetViewPov;
         scrollwheel?: boolean;
+        showRoadLabels?: boolean;
         visible?: boolean;
         zoomControl?: boolean;
         zoomControlOptions?: ZoomControlOptions;
